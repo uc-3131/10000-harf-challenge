@@ -10,17 +10,18 @@
     align-items:center;
     height:100vh;
     margin:0;
-    background:#f3f4f6;
     font-family:sans-serif;
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
   }
   .card {
-    background:#fff;
+    background:#4a90e2; /* Koyu mavimsi */
     padding:20px;
     border-radius:12px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    box-shadow:0 4px 20px rgba(0,0,0,0.2);
     text-align:center;
     width:90%;
     max-width:500px;
+    color: #fff;
   }
   .count {
     margin-top:10px;
@@ -52,7 +53,6 @@
     border:1px solid #ccc;
     font-size:15px;
   }
-  /* Popup */
   #popup {
     position:fixed;
     top:20px;
@@ -65,6 +65,13 @@
     font-weight:bold;
     display:none;
     z-index:1000;
+  }
+  textarea {
+    border-radius:12px;
+    padding:12px;
+    font-size:16px;
+    width: calc(100% - 24px); /* Kart padding ile uyumlu */
+    resize:vertical;
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -119,9 +126,7 @@
 
   <div class="card">
     <h2>10K Harf Challenge</h2>
-    <center>
-      <textarea id="inputBox" oninput="updateCount()" onpaste="blockPaste(event)" rows="15" cols="50" style="border-radius:12px; padding:12px; font-size:16px;"></textarea>
-    </center>
+    <textarea id="inputBox" oninput="updateCount()" onpaste="blockPaste(event)" rows="15"></textarea>
     <div id="count" class="count">Harf sayısı: 0</div>
     <button id="actionBtn" class="btn" disabled onclick="showMailBox()">Yeterli değil</button>
     <div id="mailBox">
