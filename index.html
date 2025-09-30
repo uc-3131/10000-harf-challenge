@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<title>10K Harf Challenge</title>
+<style>
+  body {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+    background:#f3f4f6;
+    font-family:sans-serif;
+  }
+  .card {
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    text-align:center;
+    width:90%;
+    max-width:500px;
+  }
+  .count {
+    margin-top:10px;
+    font-weight:bold;
+  }
+  .btn {
+    margin-top:15px;
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#e11d48;
+    color:#fff;
+    font-weight:bold;
+    cursor:not-allowed;
+  }
+  .btn.enabled {
+    background:#16a34a;
+    cursor:pointer;
+  }
+  #mailBox {
+    margin-top:15px;
+    display:none;
+  }
+  input[type="email"] {
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:15px;
+  }
+  /* Popup */
+  #popup {
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#ff4444;
+    color:#fff;
+    padding:10px 20px;
+    border-radius:8px;
+    font-weight:bold;
+    display:none;
+    z-index:1000;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){ emailjs.init("6-pxG0wnCCHReR3vX"); })();
+
+  const TARGET = 10000;
+  function updateCount(){
+    const text = document.getElementById("inputBox").value;
+    const len = text.length;
+    document.getElementById("count").textContent = "Harf sayısı: " + len;
+    const btn = document.getElementById("actionBtn");
+    if(len >= TARGET){
+      btn.classList.add("enabled");
+      btn.disabled = false;
+      btn.textContent = "Devam Et";
+    } else {
+      btn.classList.remove("enabled");
+      btn.disabled = true;
+      btn.textContent = "Yeterli değil";
+    }
+  }
+
+  function showMailBox(){
+    document.getElementById("mailBox").style.display = "block";
+  }
+
+  function sendMail(){
+    const email = document.getElementById("userEmail").value;
+    if(!email) { alert("Lütfen mail adresinizi girin."); return; }
+
+    emailjs.send("service_229acr6","template_c69gmut",{
+      to_email: "uc201509@gmail.com",
+      message: email + " adresli kullanıcı 10000 harf yazdı."
+    }).then(() => {
+      alert("Mesaj başarıyla gönderildi!");
+    }, (err) => {
+      alert("Hata oluştu: " + JSON.stringify(err));
+    });
+  }
+
+  function blockPaste(e){
+    e.preventDefault();
+    const popup = document.getElementById("popup");
+    popup.style.display = "block";
+    setTimeout(() => { popup.style.display = "none"; }, 2000);
+  }
+</script>
+</head>
+<body>
+  <div id="popup">İyi denemeydi.</div>
+
+  <div class="card">
+    <h2>10K Harf Challenge</h2>
+    <center>
+      <textarea id="inputBox" oninput="updateCount()" onpaste="blockPaste(event)" rows="15" cols="50" style="border-radius:12px; padding:12px; font-size:16px;"></textarea>
+    </center>
+    <div id="count" class="count">Harf sayısı: 0</div>
+    <button id="actionBtn" class="btn" disabled onclick="showMailBox()">Yeterli değil</button>
+    <div id="mailBox">
+      <input type="email" id="userEmail" placeholder="Mail adresinizi girin">
+      <button onclick="sendMail()">Gönder</button>
+    </div>
+  </div>
+</body>
+</html>
